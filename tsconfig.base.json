@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@kakao/amqp": ["libs/amqp/src/index.ts"],
+      "@kakao/models": ["libs/models/src/index.ts"],
       "@kakao/redis": ["libs/redis/src/index.ts"],
       "@kakao/repository": ["libs/repository/src/index.ts"]
     }

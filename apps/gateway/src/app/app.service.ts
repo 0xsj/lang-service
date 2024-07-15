@@ -10,18 +10,12 @@ export class AppService {
     @Inject('ENTITY_SERVICE') private readonly entityClient: ClientProxy,
     @Inject('USER_SERVICE') private readonly userClient: ClientProxy
   ) {}
+
   getData(): { message: string } {
     return { message: 'Hello API' };
   }
 
-  async testMicroservicesConnections(): Promise<void> {
-    try {
-      const authResponse = await this.authClient
-        .send('auth_ping', {})
-        .toPromise();
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
+  checkHealth() {
+    return this.authClient.send({ cmd: 'auth-service-ping' }, {});
   }
 }
