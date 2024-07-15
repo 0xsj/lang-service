@@ -5,3 +5,17 @@ FROM node:${NODE_VERSION}-alpine
 ARG APP_NAME
 
 WORKDIR /app
+
+ENV APP_NAME=$APP_NAME
+ENV PORT=3333
+ENV GLOBAL_API_PREFIX=api
+ENV APP_VERSION=0.0.1
+ENV NODE_ENV=development
+ENV SERVER_URL=http://0.0.0.0:3333
+
+COPY ./apps/${APP_NAME}/package*.json ./
+RUN npm install tslib
+
+COPY ./dist/apps/${APP_NAME} ./
+
+CMD ["node", "./main.js"]
