@@ -15,10 +15,14 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@kakao/amqp": ["libs/amqp/src/index.ts"],
-      "@kakao/models": ["libs/models/src/index.ts"],
-      "@kakao/redis": ["libs/redis/src/index.ts"],
-      "@kakao/repository": ["libs/repository/src/index.ts"]
+      "@kakao/cassandra": ["libs/internal/cassandra/src/index.ts"],
+      "@kakao/models": ["libs/core/models/src/index.ts"],
+      "@kakao/mongo": ["libs/internal/mongo/src/index.ts"],
+      "@kakao/redis": ["libs/internal/redis/src/index.ts"],
+      "@kakao/repository": ["libs/core/repository/src/index.ts"],
+      "@kakao/rmq": ["libs/internal/rmq/src/index.ts"],
+      "@kakao/ui": ["libs/ui/src/index.ts"],
+      "@kakao/ui/server": ["libs/ui/src/server.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
