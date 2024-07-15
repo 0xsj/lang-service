@@ -2,13 +2,18 @@
   "name": "@kakao/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "nx serve",
+    "build": "nx build",
+    "format": "nx format:write"
+  },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^10.0.2",
     "@nestjs/core": "^10.0.2",
     "@nestjs/microservices": "^10.3.10",
     "@nestjs/platform-express": "^10.0.2",
+    "cassandra-driver": "^4.7.2",
     "next": "14.2.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
