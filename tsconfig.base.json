@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@kakao/amqp": ["libs/amqp/src/index.ts"],
+      "@kakao/redis": ["libs/redis/src/index.ts"],
+      "@kakao/repository": ["libs/repository/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

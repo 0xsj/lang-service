@@ -1,0 +1,24 @@
+{
+  "name": "document-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/document-service/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "document-service:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "document-service:build:development"
+        },
+        "production": {
+          "buildTarget": "document-service:build:production"
+        }
+      }
+    }
+  }
+}
