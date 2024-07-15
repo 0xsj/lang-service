@@ -1,19 +1,43 @@
-const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin');
-const { join } = require('path');
+const { composePlugins, withNx } = require('@nx/webpack');
+const nodeExternals = require('webpack-node-externals');
 
-module.exports = {
-  output: {
-    path: join(__dirname, '../../dist/apps/auth-service'),
-  },
-  plugins: [
-    new NxAppWebpackPlugin({
-      target: 'node',
-      compiler: 'tsc',
-      main: './src/main.ts',
-      tsConfig: './tsconfig.app.json',
-      assets: ['./src/assets'],
-      optimization: false,
-      outputHashing: 'none',
+// workaround to load ESM modules in node
+// @see https://github.com/nrwl/nx/pull/10414
+// @see https://github.com/nrwl/nx/issues/7872#issuecomment-997460397
+
+// Nx plugins for webpack.
+module.exports = composePlugins(withNx(), (config) => {
+  config.resolve.extensionAlias = {
+    ...config.resolve.extensionAlias,
+    '.js': ['.ts', '.js'],
+    '.mjs': ['.mts', '.mjs'],
+  };
+  return {
+    ...config,
+    externalsPresets: {
+      node: true,
+    },
+    output: {
+      ...config.output,
+      module: true,
+      libraryTarget: 'module',
+      chunkFormat: 'module',
+      filename: '[name].mjs',
+      chunkFilename: '[name].mjs',
+      library: {
+        type: 'module',
+      },
+      environment: {
+        module: true,
+      },
+    },
+    experiments: {
+      ...config.experiments,
+      outputModule: true,
+      topLevelAwait: true,
+    },
+    externals: nodeExternals({
+      importType: 'module',
     }),
-  ],
-};
+  };
+});

@@ -18,4 +18,20 @@ export class AppService {
   checkHealth() {
     return this.authClient.send({ cmd: 'auth-service-ping' }, {});
   }
+
+  checkBrandHealth() {
+    return this.brandClient.send({ cmd: 'brand-service-ping' }, {});
+  }
+
+  checkDocumentHealth() {
+    return this.documentClient.send({ cmd: 'brand-service-ping' }, {});
+  }
+
+  checkEntityHealth() {
+    return this.entityClient.send({ cmd: 'brand-service-ping' }, {});
+  }
+
+  checkUserHealth() {
+    return this.userClient.send({ cmd: 'brand-service-ping' }, {});
+  }
 }
