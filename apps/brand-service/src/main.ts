@@ -7,9 +7,21 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
+import { Transport } from '@nestjs/microservices';
+
+const logger = new Logger();
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice(AppModule, {});
+  const app = await NestFactory.createMicroservice(AppModule, {
+    transport: Transport.TCP,
+    options: {
+      host: '127.0.0.1',
+      port: process.env.BRAND_SERVICE_PORT,
+    },
+  });
+
+  logger.log('Brand service is listening');
+  await app.listen();
 }
 
 bootstrap();
