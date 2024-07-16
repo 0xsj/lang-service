@@ -1,9 +1,0 @@
-{
-  "name": "cassandra",
-  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/internal/cassandra/src",
-  "projectType": "library",
-  "tags": [],
-  "// targets": "to see all targets run: nx show project cassandra --web",
-  "targets": {}
-}
