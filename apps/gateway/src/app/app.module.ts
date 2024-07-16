@@ -13,7 +13,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           // host: '0.0.0.0',
           host: '::',
-          port: parseInt(process.env.AUTH_SERVICE_PORT) || 3001,
+          port: 3001,
         },
       },
       {
@@ -22,7 +22,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           // host: '0.0.0.0',
           host: '::',
-          port: parseInt(process.env.BRAND_SERVICE_PORT) || 3002,
+          port: 3002,
         },
       },
       {
@@ -31,7 +31,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           // host: '0.0.0.0',
           host: '::',
-          port: parseInt(process.env.DOCUMENT_SERVICE_PORT) || 3003,
+          port: 3003,
         },
       },
       {
@@ -40,7 +40,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           // host: '0.0.0.0',
           host: '::',
-          port: parseInt(process.env.ENTITY_SERVICE_PORT) || 3004,
+          port: 3004,
         },
       },
       {
@@ -49,7 +49,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           // host: '0.0.0.0',
           host: '::',
-          port: parseInt(process.env.USER_SERVICE_PORT) || 3005,
+          port: 3005,
         },
       },
     ]),

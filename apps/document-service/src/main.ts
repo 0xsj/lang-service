@@ -15,9 +15,9 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice(AppModule, {
     transport: Transport.TCP,
     options: {
-      // host: '0.0.0.0',
-      host: '::',
-      port: process.env.DOCUMENT_SERVICE_PORT || 3003,
+      host: 'localhost',
+      port: 3003,
+      // port: process.env.DOCUMENT_SERVICE_PORT || 3003,
     },
   });
   logger.log('Document service is listening');

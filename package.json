@@ -5,7 +5,9 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "format": "nx format:write"
+    "format": "nx format:write",
+    "build:all": "npx nx run-many --target=build --projects=gateway,auth-service,brand-service,entity-service,user-service,document-service,client",
+    "serve:all": "npx nx run-many --target=serve --projects=gateway,auth-service,brand-service,user-service,document-service,entity-service,client"
   },
   "private": true,
   "dependencies": {

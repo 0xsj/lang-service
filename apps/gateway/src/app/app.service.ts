@@ -24,14 +24,14 @@ export class AppService {
   }
 
   checkDocumentHealth() {
-    return this.documentClient.send({ cmd: 'brand-service-ping' }, {});
+    return this.documentClient.send({ cmd: 'document-service-ping' }, {});
   }
 
   checkEntityHealth() {
-    return this.entityClient.send({ cmd: 'brand-service-ping' }, {});
+    return this.entityClient.send({ cmd: 'entity-service-ping' }, {});
   }
 
   checkUserHealth() {
-    return this.userClient.send({ cmd: 'brand-service-ping' }, {});
+    return this.userClient.send({ cmd: 'user-service-ping' }, {});
   }
 }

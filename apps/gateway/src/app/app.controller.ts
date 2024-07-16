@@ -19,4 +19,29 @@ export class AppController {
     logger.log('gateway controller - auth service healthcheck');
     return result;
   }
+
+  @Get('brand-service')
+  async checkBrandHealth() {
+    const result = await this.appService.checkBrandHealth();
+    logger.log('gateway controller - brand service healthcheck');
+    return result;
+  }
+  @Get('document-service')
+  async checkDocumentHealth() {
+    const result = await this.appService.checkDocumentHealth();
+    logger.log('gateway controller - document service healthcheck');
+    return result;
+  }
+  @Get('entity-service')
+  async checkEntityHealth() {
+    const result = await this.appService.checkEntityHealth();
+    logger.log('gateway controller - entity service healthcheck');
+    return result;
+  }
+  @Get('user-service')
+  async checkUserHealth() {
+    const result = await this.appService.checkUserHealth();
+    logger.log('gateway controller - user service healthcheck');
+    return result;
+  }
 }
