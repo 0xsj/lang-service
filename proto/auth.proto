@@ -1,0 +1,45 @@
+syntax = "proto3";
+package proto;
+option go_package = '.';
+import "google/protobuf/timestamp.proto";
+
+// Message for empty responses
+message Empty {}
+
+// Token used for OAuth authentication
+message OAuthToken {
+    string access_token = 1;
+    string refresh_token = 2;
+    google.protobuf.Timestamp expires_at = 3;
+    string token_type = 4;
+    string message = 5;
+}
+
+// Credentials for OAuth login
+message OAuthCredentials {
+    string provider = 1;
+    string code = 2;
+}
+
+// Credentials for standard user login
+message UserCredentials {
+    string email = 1;
+    string password = 2;
+}
+
+// Token used for authentication, including a user ID
+message AuthToken {
+    string token = 1;
+    string user_id = 2; 
+    string message = 3;
+    google.protobuf.Timestamp issued_at = 4;
+    google.protobuf.Timestamp expires_at = 5;
+}
+
+// Service for authentication operations
+service AuthService {
+    rpc Login(UserCredentials) returns (AuthToken); // User login
+    rpc Register(UserCredentials) returns (AuthToken); // User registration
+    rpc ExchangeCodeForToken(OAuthCredentials) returns (OAuthToken); // OAuth token exchange
+    rpc RefreshToken(AuthToken) returns (AuthToken); // Token refresh
+}

@@ -1,0 +1,39 @@
+syntax = "proto3";
+package proto;
+option go_package = '.';
+import "google/protobuf/timestamp.proto";
+
+message DID {
+    string did = 1;
+}
+
+message VerifiableCredential {
+    string credential_id = 1;
+    string issuer_id = 2;
+    string subject_did = 3;
+    google.protobuf.Timestamp issuance_date = 4;
+    google.protobuf.Timestamp expiration_date = 5;
+    string credential_date = 6;
+}
+
+message Proof {
+    string proof_id = 1;
+    string proof_data = 2;
+}
+
+message AuthRequest {
+    DID did = 1;
+    VerifiableCredential credential = 2;
+}
+
+message AuthResponse {
+    bool success = 1;
+    Proof proof = 2;
+    string message = 3;
+}
+
+service DIDService {
+    rpc Authenticate(AuthRequest) returns (AuthResponse);
+    rpc IssueCredential(VerifiableCredential) returns (AuthResponse);
+    rpc VerifyCredential(VerifiableCredential) returns (AuthResponse);
+}
