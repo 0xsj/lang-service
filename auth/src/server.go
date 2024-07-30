@@ -11,7 +11,6 @@ func main() {
 	appModule := app.NewAppModule()
 	http.HandleFunc("/ping", appModule.UserModule.UserController.HandlePing)
 
-	// Start the server
 	log.Println("Starting server on :3001")
 	log.Fatal(http.ListenAndServe(":3001", nil))
 }

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-directories=("auth")
+directories=("conduit")
 
 for dir in "${directories[@]}"; do
     echo "initializing services in $dir"
