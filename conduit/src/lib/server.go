@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type Transport interface {
@@ -40,22 +41,19 @@ func StartServer(config *TransportConfig) error {
 	switch config.Type {
 	case HTTP:
 		transport = &HTTPTransport{
-			Handler: http.DefaultServeMux, // Replace with actual handler
+			Handler: http.DefaultServeMux,
 		}
 	case GRPC:
 		grpcServer := grpc.NewServer()
+		reflection.Register(grpcServer)
 		transport = &GRPCTransport{Server: grpcServer}
 	case RMQ:
-		// Implement RMQTransport similarly
 		return fmt.Errorf("RMQ transport not yet implemented")
-	case Kafka:
-		// Implement KafkaTransport similarly
-		return fmt.Errorf("Kafka transport not yet implemented")
 	default:
 		return fmt.Errorf("unsupported transport type: %s", config.Type)
 	}
 
-	address := fmt.Sprintf(":%d", config.Port) // Format port as part of the address
+	address := fmt.Sprintf(":%d", config.Port) 
 	if err := transport.Start(address); err != nil {
 		return fmt.Errorf("error starting transport: %w", err)
 	}

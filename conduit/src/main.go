@@ -19,7 +19,7 @@ func main() {
 	
 
 	transportConfig := lib.TransportConfig{
-		Type:    lib.HTTP,
+		Type:    lib.GRPC,
 		Port:    3333,
 	}
 

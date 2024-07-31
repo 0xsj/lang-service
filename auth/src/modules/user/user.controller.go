@@ -20,3 +20,7 @@ func (uc *UserController) HandlePing(w http.ResponseWriter, r *http.Request) {
         http.Error(w, err.Error(), http.StatusInternalServerError)
     }
 }
+
+func (uc *UserController) RegisterRoutes(mux *http.ServeMux) {
+    mux.HandleFunc("/ping", uc.HandlePing)
+}

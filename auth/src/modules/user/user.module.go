@@ -7,11 +7,11 @@ import (
 
 type UserModule struct {
 	UserController *UserController
+	UserService *UserService
 }
 
 func (um *UserModule) Init() {
 	log.Println("UserModule initialized successfully")
-	um.RegisterRoutes()
 }
 
 func NewUserModule() *UserModule {
@@ -21,6 +21,6 @@ func NewUserModule() *UserModule {
 	}
 }
 
-func (um *UserModule) RegisterRoutes(){
-	http.HandleFunc("/ping", um.UserController.HandlePing)
+func (um *UserModule) InitRoutes(mux *http.ServeMux) {
+	um.UserController.RegisterRoutes(mux)
 }

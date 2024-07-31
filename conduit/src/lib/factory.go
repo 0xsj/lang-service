@@ -48,11 +48,9 @@ func (f *Factory) StartMicroservice() {
 	log.Fatal(http.ListenAndServe(address, nil))
 }
 
-// Add a method to start the app on a specific port
 func (f *Factory) StartAppServer(port int) {
 	address := net.JoinHostPort("", strconv.Itoa(port))
 	log.Printf("Starting server on port %d\n", port)
 	
-	// Assuming this is an HTTP server; adjust as needed for your use case
 	http.ListenAndServe(address, nil)
 }

@@ -34,11 +34,15 @@ func (t *GRPCTransport) Start(address string) error {
 	return t.Server.Serve(listener)
 }
 
-func StartServer(config *TransportConfig) error {
+func StartServer(config *TransportConfig, modules ...ServiceRegistrar) error {
 	var transport Transport
 
 	switch config.Type {
 	case HTTP:
+		mux := http.NewServeMux()
+		for _, module := range modules {
+			module.RegisterHTTPHandlers(mux)
+		}
 		transport = &HTTPTransport{
 			Handler: http.DefaultServeMux, // Replace with actual handler
 		}
@@ -46,10 +50,8 @@ func StartServer(config *TransportConfig) error {
 		grpcServer := grpc.NewServer()
 		transport = &GRPCTransport{Server: grpcServer}
 	case RMQ:
-		// Implement RMQTransport similarly
 		return fmt.Errorf("RMQ transport not yet implemented")
 	case Kafka:
-		// Implement KafkaTransport similarly
 		return fmt.Errorf("Kafka transport not yet implemented")
 	default:
 		return fmt.Errorf("unsupported transport type: %s", config.Type)
@@ -62,3 +64,5 @@ func StartServer(config *TransportConfig) error {
 
 	return nil
 }
+
+
