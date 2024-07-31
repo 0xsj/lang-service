@@ -4,14 +4,13 @@ import (
 	"log"
 	"os"
 	"strconv"
-
-	"github.com/spf13/viper"
 )
 
+// Config struct now directly reads from environment variables
 type Config struct {
 	DB            DBConfig
-	UserService   ServiceConfig `mapstructure:"user-service"`
-	AuthService   ServiceConfig `mapstructure:"auth-service"`
+	UserService   ServiceConfig `env:"USER_SERVICE_"`
+	AuthService   ServiceConfig `env:"AUTH_SERVICE_"`
 	JWT           JWTConfig
 }
 
@@ -25,41 +24,54 @@ type DBConfig struct {
 
 type ServiceConfig struct {
 	Host string
-	Port string
+	Port int
 }
 
 type JWTConfig struct {
 	Secret string
 }
 
+// LoadConfig loads configuration from environment variables
 func LoadConfig() (*Config, error) {
-	viper.SetConfigName("config")
-	viper.AddConfigPath("..")
-	viper.SetConfigType("yaml")
-
-	if err := viper.ReadInConfig(); err != nil {
-		return nil, err
+	cfg := &Config{
+		DB: DBConfig{
+			Host:     getEnv("DB_HOST", ""),
+			Port:     getEnvAsInt("DB_PORT", 5432),
+			User:     getEnv("DB_USER", "postgres"),
+			Password: getEnv("DB_PASSWORD", ""),
+			Name:     getEnv("DB_NAME", ""),
+		},
+		UserService: ServiceConfig{
+			Host: getEnv("USER_SERVICE_HOST", ""),
+			Port: getEnvAsInt("USER_SERVICE_PORT", 0),
+		},
+		AuthService: ServiceConfig{
+			Host: getEnv("AUTH_SERVICE_HOST", ""),
+			Port: getEnvAsInt("AUTH_SERVICE_PORT", 8080),
+		},
+		JWT: JWTConfig{
+			Secret: getEnv("JWT_SECRET", ""),
+		},
 	}
-
-	var cfg Config
-	if err := viper.Unmarshal(&cfg); err != nil {
-		return nil, err
-	}
-
-	overrideConfigWithEnv(&cfg)
 
 	log.Println("Config loaded successfully")
-	return &cfg, nil
+	return cfg, nil
 }
 
-func overrideConfigWithEnv(cfg *Config) {
-	if portStr := os.Getenv("PORT"); portStr != "" {
-		if port, err := strconv.Atoi(portStr); err == nil {
-			cfg.DB.Port = port
+// getEnv gets an environment variable or returns a default value if not set
+func getEnv(key, defaultValue string) string {
+	if value, exists := os.LookupEnv(key); exists {
+		return value
+	}
+	return defaultValue
+}
+
+// getEnvAsInt gets an environment variable as an integer or returns a default value if not set
+func getEnvAsInt(key string, defaultValue int) int {
+	if value, exists := os.LookupEnv(key); exists {
+		if intValue, err := strconv.Atoi(value); err == nil {
+			return intValue
 		}
 	}
-
-	if host := os.Getenv("HOST"); host != "" {
-		cfg.DB.Host = host
-	}
+	return defaultValue
 }

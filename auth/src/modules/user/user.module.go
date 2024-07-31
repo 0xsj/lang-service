@@ -1,13 +1,17 @@
 package user
 
-import "log"
+import (
+	"log"
+	"net/http"
+)
 
 type UserModule struct {
 	UserController *UserController
 }
 
-func (u *UserModule) Init() {
+func (um *UserModule) Init() {
 	log.Println("UserModule initialized successfully")
+	um.RegisterRoutes()
 }
 
 func NewUserModule() *UserModule {
@@ -15,4 +19,8 @@ func NewUserModule() *UserModule {
 	return &UserModule{
 		UserController: userController,
 	}
+}
+
+func (um *UserModule) RegisterRoutes(){
+	http.HandleFunc("/ping", um.UserController.HandlePing)
 }

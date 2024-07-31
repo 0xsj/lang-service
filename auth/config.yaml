@@ -6,7 +6,7 @@ db:
   name: ""
 auth-service:
   host: ""
-  port: "3003"
+  port: 8080
 jwt:
   secret: ""
 kafka:

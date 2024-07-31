@@ -8,12 +8,10 @@ import (
 	"google.golang.org/grpc"
 )
 
-// Define a common interface for different transports
 type Transport interface {
 	Start(address string) error
 }
 
-// Implement HTTP transport
 type HTTPTransport struct {
 	Handler http.Handler
 }
@@ -23,14 +21,12 @@ func (t *HTTPTransport) Start(address string) error {
 	return http.ListenAndServe(address, t.Handler)
 }
 
-// Implement GRPC transport
 type GRPCTransport struct {
 	Server *grpc.Server
 }
 
 func (t *GRPCTransport) Start(address string) error {
 	fmt.Printf("Starting gRPC server on %s\n", address)
-	// Create a listener and start serving gRPC requests
 	listener, err := net.Listen("tcp", address)
 	if err != nil {
 		return fmt.Errorf("failed to listen on %s: %w", address, err)
@@ -38,7 +34,6 @@ func (t *GRPCTransport) Start(address string) error {
 	return t.Server.Serve(listener)
 }
 
-// StartServer initializes and starts the server based on transport config
 func StartServer(config *TransportConfig) error {
 	var transport Transport
 
@@ -60,7 +55,8 @@ func StartServer(config *TransportConfig) error {
 		return fmt.Errorf("unsupported transport type: %s", config.Type)
 	}
 
-	if err := transport.Start(config.Address); err != nil {
+	address := fmt.Sprintf(":%d", config.Port) // Format port as part of the address
+	if err := transport.Start(address); err != nil {
 		return fmt.Errorf("error starting transport: %w", err)
 	}
 
