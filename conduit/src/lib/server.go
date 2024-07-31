@@ -2,19 +2,63 @@ package lib
 
 import (
 	"fmt"
+	"net"
 	"net/http"
 
-	"github.com/0xsj/kakao/conduit/src/config"
+	"google.golang.org/grpc"
 )
 
-// StartServer starts an HTTP server with the given handler and configuration.
-func StartServer(handler http.Handler, config *config.Config, port int) {
-	if port == 0 {
-		port = 3000
+type Transport interface {
+	Start(address string) error
+}
+
+type HTTPTransport struct {
+	Handler http.Handler
+}
+
+func (t *HTTPTransport) Start(address string) error {
+	fmt.Printf("Starting HTTP server on %s\n", address)
+	return http.ListenAndServe(address, t.Handler)
+}
+
+type GRPCTransport struct {
+	Server *grpc.Server
+}
+
+func (t *GRPCTransport) Start(address string) error {
+	fmt.Printf("Starting gRPC server on %s\n", address)
+	listener, err := net.Listen("tcp", address)
+	if err != nil {
+		return fmt.Errorf("failed to listen on %s: %w", address, err)
 	}
-	addr := fmt.Sprintf(":%d", port)
-	fmt.Printf("🚀 Server is running on http://localhost%s\n", addr)
-	if err := http.ListenAndServe(addr, handler); err != nil {
-		fmt.Printf("Error starting server: %v\n", err)
+	return t.Server.Serve(listener)
+}
+
+func StartServer(config *TransportConfig) error {
+	var transport Transport
+
+	switch config.Type {
+	case HTTP:
+		transport = &HTTPTransport{
+			Handler: http.DefaultServeMux, // Replace with actual handler
+		}
+	case GRPC:
+		grpcServer := grpc.NewServer()
+		transport = &GRPCTransport{Server: grpcServer}
+	case RMQ:
+		// Implement RMQTransport similarly
+		return fmt.Errorf("RMQ transport not yet implemented")
+	case Kafka:
+		// Implement KafkaTransport similarly
+		return fmt.Errorf("Kafka transport not yet implemented")
+	default:
+		return fmt.Errorf("unsupported transport type: %s", config.Type)
 	}
+
+	address := fmt.Sprintf(":%d", config.Port) // Format port as part of the address
+	if err := transport.Start(address); err != nil {
+		return fmt.Errorf("error starting transport: %w", err)
+	}
+
+	return nil
 }

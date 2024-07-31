@@ -18,7 +18,6 @@ func (a *AppModule) Init() {
 
 func NewAppModule() *AppModule {
 	userModule := user.NewUserModule()
-
 	return &AppModule{
 		UserModule: userModule,
 	}
