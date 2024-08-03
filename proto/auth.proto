@@ -6,6 +6,29 @@ option go_package = ".";
 
 import "google/protobuf/timestamp.proto";
 
+// Base message for OTP
+message OTP {
+  string user_id = 1; // The ID of the user associated with the OTP
+  string token = 2; // OTP token
+  google.protobuf.Timestamp issued_at = 3; // Timestamp when OTP was issued
+}
+
+// Base message for Session
+message Session {
+  string user_id = 1; // The ID of the user associated with the session
+  string token = 2; // Session token
+  google.protobuf.Timestamp issued_at = 3; // Timestamp when the session token was issued
+}
+
+// Base message for Challenge
+// Base message for Challenge
+message Challenge {
+  string user_id = 1; // The ID of the user associated with the challenge
+  string challenge = 2; // The cryptographic challenge (nonce)
+  google.protobuf.Timestamp issued_at = 3; // Timestamp when the challenge was issued
+}
+
+
 // The AuthService definition for managing authentication
 service AuthService {
   // Sends an OTP to the user
@@ -33,14 +56,13 @@ message SendOtpRequest {
 // The response message for sending an OTP
 message SendOtpResponse {
   bool success = 1; // Indicates if OTP was sent successfully
-  string otp_token = 2; // The OTP token sent to the user
-  google.protobuf.Timestamp issued_at = 3; // Timestamp when OTP was issued
+  OTP otp = 2; // The OTP message sent to the user
 }
 
 // The request message for verifying an OTP
 message VerifyOtpRequest {
   string user_id = 1; // The ID of the user
-  string otp = 2; // The OTP provided by the user
+  string otp_token = 2; // The OTP token provided by the user
   google.protobuf.Timestamp received_at = 3; // Timestamp when OTP was received
 }
 
@@ -58,9 +80,8 @@ message IssueSessionTokenRequest {
 
 // The response message for issuing a session token
 message IssueSessionTokenResponse {
-  string session_token = 1; // The session token for authenticated user
-  google.protobuf.Timestamp issued_at = 2; // Timestamp when the session token was issued
-  string message = 3; // Additional information (e.g., success or error messages)
+  Session session = 1; // The session token message for authenticated user
+  string message = 2; // Additional information (e.g., success or error messages)
 }
 
 // The request message for revoking a session token
@@ -77,7 +98,7 @@ message RevokeSessionTokenResponse {
 // The request message for verifying a signed challenge
 message VerifyChallengeRequest {
   string user_id = 1; // The ID of the user
-  string signed_challenge = 2; // The signed challenge from the user
+  Challenge signed_challenge = 2; // The signed challenge from the user
 }
 
 // The response message for verifying a signed challenge

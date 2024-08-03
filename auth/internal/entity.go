@@ -17,5 +17,5 @@ type SessionTokenEntity struct {
 type ChallengeEntity struct {
 	UserID string 
 	Challenge string 
-	IssuedAt time.Ticker
+	IssuedAt time.Time
 }
