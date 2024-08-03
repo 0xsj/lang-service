@@ -30,17 +30,12 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// The AuthService definition for managing authentication
+// Service for authentication operations
 type AuthServiceClient interface {
-	// Sends an OTP to the user
 	SendOtp(ctx context.Context, in *SendOtpRequest, opts ...grpc.CallOption) (*SendOtpResponse, error)
-	// Verifies the OTP provided by the user
 	VerifyOtp(ctx context.Context, in *VerifyOtpRequest, opts ...grpc.CallOption) (*VerifyOtpResponse, error)
-	// Issues a session token upon successful authentication
 	IssueSessionToken(ctx context.Context, in *IssueSessionTokenRequest, opts ...grpc.CallOption) (*IssueSessionTokenResponse, error)
-	// Revokes a session token
 	RevokeSessionToken(ctx context.Context, in *RevokeSessionTokenRequest, opts ...grpc.CallOption) (*RevokeSessionTokenResponse, error)
-	// Verifies a signed challenge from the identity service
 	VerifyChallenge(ctx context.Context, in *VerifyChallengeRequest, opts ...grpc.CallOption) (*VerifyChallengeResponse, error)
 }
 
@@ -106,17 +101,12 @@ func (c *authServiceClient) VerifyChallenge(ctx context.Context, in *VerifyChall
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
 //
-// The AuthService definition for managing authentication
+// Service for authentication operations
 type AuthServiceServer interface {
-	// Sends an OTP to the user
 	SendOtp(context.Context, *SendOtpRequest) (*SendOtpResponse, error)
-	// Verifies the OTP provided by the user
 	VerifyOtp(context.Context, *VerifyOtpRequest) (*VerifyOtpResponse, error)
-	// Issues a session token upon successful authentication
 	IssueSessionToken(context.Context, *IssueSessionTokenRequest) (*IssueSessionTokenResponse, error)
-	// Revokes a session token
 	RevokeSessionToken(context.Context, *RevokeSessionTokenRequest) (*RevokeSessionTokenResponse, error)
-	// Verifies a signed challenge from the identity service
 	VerifyChallenge(context.Context, *VerifyChallengeRequest) (*VerifyChallengeResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }

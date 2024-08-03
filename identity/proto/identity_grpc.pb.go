@@ -19,26 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	IdentityService_CreateDID_FullMethodName             = "/proto.IdentityService/CreateDID"
-	IdentityService_ResolveDID_FullMethodName            = "/proto.IdentityService/ResolveDID"
-	IdentityService_IssueChallenge_FullMethodName        = "/proto.IdentityService/IssueChallenge"
-	IdentityService_VerifySignedChallenge_FullMethodName = "/proto.IdentityService/VerifySignedChallenge"
+	IdentityService_CreateDID_FullMethodName  = "/proto.IdentityService/CreateDID"
+	IdentityService_ResolveDID_FullMethodName = "/proto.IdentityService/ResolveDID"
 )
 
 // IdentityServiceClient is the client API for IdentityService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// The IdentityService definition for managing DID and challenges
+// Service for DID operations
 type IdentityServiceClient interface {
-	// Creates a new DID for a user
 	CreateDID(ctx context.Context, in *CreateDIDRequest, opts ...grpc.CallOption) (*CreateDIDResponse, error)
-	// Resolves a DID to get its document
 	ResolveDID(ctx context.Context, in *ResolveDIDRequest, opts ...grpc.CallOption) (*ResolveDIDResponse, error)
-	// Issues a cryptographic challenge to the user
-	IssueChallenge(ctx context.Context, in *IssueChallengeRequest, opts ...grpc.CallOption) (*IssueChallengeResponse, error)
-	// Verifies a signed challenge from the user
-	VerifySignedChallenge(ctx context.Context, in *VerifySignedChallengeRequest, opts ...grpc.CallOption) (*VerifySignedChallengeResponse, error)
 }
 
 type identityServiceClient struct {
@@ -69,40 +61,14 @@ func (c *identityServiceClient) ResolveDID(ctx context.Context, in *ResolveDIDRe
 	return out, nil
 }
 
-func (c *identityServiceClient) IssueChallenge(ctx context.Context, in *IssueChallengeRequest, opts ...grpc.CallOption) (*IssueChallengeResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(IssueChallengeResponse)
-	err := c.cc.Invoke(ctx, IdentityService_IssueChallenge_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *identityServiceClient) VerifySignedChallenge(ctx context.Context, in *VerifySignedChallengeRequest, opts ...grpc.CallOption) (*VerifySignedChallengeResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(VerifySignedChallengeResponse)
-	err := c.cc.Invoke(ctx, IdentityService_VerifySignedChallenge_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // IdentityServiceServer is the server API for IdentityService service.
 // All implementations must embed UnimplementedIdentityServiceServer
 // for forward compatibility.
 //
-// The IdentityService definition for managing DID and challenges
+// Service for DID operations
 type IdentityServiceServer interface {
-	// Creates a new DID for a user
 	CreateDID(context.Context, *CreateDIDRequest) (*CreateDIDResponse, error)
-	// Resolves a DID to get its document
 	ResolveDID(context.Context, *ResolveDIDRequest) (*ResolveDIDResponse, error)
-	// Issues a cryptographic challenge to the user
-	IssueChallenge(context.Context, *IssueChallengeRequest) (*IssueChallengeResponse, error)
-	// Verifies a signed challenge from the user
-	VerifySignedChallenge(context.Context, *VerifySignedChallengeRequest) (*VerifySignedChallengeResponse, error)
 	mustEmbedUnimplementedIdentityServiceServer()
 }
 
@@ -118,12 +84,6 @@ func (UnimplementedIdentityServiceServer) CreateDID(context.Context, *CreateDIDR
 }
 func (UnimplementedIdentityServiceServer) ResolveDID(context.Context, *ResolveDIDRequest) (*ResolveDIDResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResolveDID not implemented")
-}
-func (UnimplementedIdentityServiceServer) IssueChallenge(context.Context, *IssueChallengeRequest) (*IssueChallengeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method IssueChallenge not implemented")
-}
-func (UnimplementedIdentityServiceServer) VerifySignedChallenge(context.Context, *VerifySignedChallengeRequest) (*VerifySignedChallengeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method VerifySignedChallenge not implemented")
 }
 func (UnimplementedIdentityServiceServer) mustEmbedUnimplementedIdentityServiceServer() {}
 func (UnimplementedIdentityServiceServer) testEmbeddedByValue()                         {}
@@ -182,42 +142,6 @@ func _IdentityService_ResolveDID_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _IdentityService_IssueChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IssueChallengeRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(IdentityServiceServer).IssueChallenge(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: IdentityService_IssueChallenge_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IdentityServiceServer).IssueChallenge(ctx, req.(*IssueChallengeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _IdentityService_VerifySignedChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(VerifySignedChallengeRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(IdentityServiceServer).VerifySignedChallenge(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: IdentityService_VerifySignedChallenge_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IdentityServiceServer).VerifySignedChallenge(ctx, req.(*VerifySignedChallengeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // IdentityService_ServiceDesc is the grpc.ServiceDesc for IdentityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -232,14 +156,6 @@ var IdentityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ResolveDID",
 			Handler:    _IdentityService_ResolveDID_Handler,
-		},
-		{
-			MethodName: "IssueChallenge",
-			Handler:    _IdentityService_IssueChallenge_Handler,
-		},
-		{
-			MethodName: "VerifySignedChallenge",
-			Handler:    _IdentityService_VerifySignedChallenge_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

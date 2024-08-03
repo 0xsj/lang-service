@@ -2,20 +2,18 @@ package internal
 
 import "time"
 
-type OtpEntity struct {
-	UserID string 
-	Token string 
-	IssuedAt time.Time
+// OTP represents the database entity for an OTP.
+type OTP struct {
+    ID         uint      `json:"id"` // Unique identifier for the OTP
+    OTPToken   string    `json:"otp_token"`
+    IssuedAt   time.Time `json:"issued_at"`
+    ExpiresAt  time.Time `json:"expires_at"`
 }
 
-type SessionTokenEntity struct {
-	UserID string 
-	Token string 
-	IssuedAt time.Time
-}
-
-type ChallengeEntity struct {
-	UserID string 
-	Challenge string 
-	IssuedAt time.Time
+// Session represents the database entity for a Session.
+type Session struct {
+    ID          uint      `json:"id"` // Unique identifier for the Session
+    SessionToken string   `json:"session_token"`
+    IssuedAt    time.Time `json:"issued_at"`
+    ExpiresAt   time.Time `json:"expires_at"`
 }

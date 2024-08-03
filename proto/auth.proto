@@ -6,103 +6,81 @@ option go_package = ".";
 
 import "google/protobuf/timestamp.proto";
 
-// Base message for OTP
-message OTP {
-  string user_id = 1; // The ID of the user associated with the OTP
-  string token = 2; // OTP token
-  google.protobuf.Timestamp issued_at = 3; // Timestamp when OTP was issued
-}
-
-// Base message for Session
-message Session {
-  string user_id = 1; // The ID of the user associated with the session
-  string token = 2; // Session token
-  google.protobuf.Timestamp issued_at = 3; // Timestamp when the session token was issued
-}
-
-// Base message for Challenge
-// Base message for Challenge
-message Challenge {
-  string user_id = 1; // The ID of the user associated with the challenge
-  string challenge = 2; // The cryptographic challenge (nonce)
-  google.protobuf.Timestamp issued_at = 3; // Timestamp when the challenge was issued
-}
-
-
-// The AuthService definition for managing authentication
+// Service for authentication operations
 service AuthService {
-  // Sends an OTP to the user
   rpc SendOtp(SendOtpRequest) returns (SendOtpResponse);
-
-  // Verifies the OTP provided by the user
   rpc VerifyOtp(VerifyOtpRequest) returns (VerifyOtpResponse);
-
-  // Issues a session token upon successful authentication
   rpc IssueSessionToken(IssueSessionTokenRequest) returns (IssueSessionTokenResponse);
-
-  // Revokes a session token
   rpc RevokeSessionToken(RevokeSessionTokenRequest) returns (RevokeSessionTokenResponse);
-  
-  // Verifies a signed challenge from the identity service
   rpc VerifyChallenge(VerifyChallengeRequest) returns (VerifyChallengeResponse);
 }
 
-// The request message for sending an OTP
-message SendOtpRequest {
-  string user_id = 1; // The ID of the user to send OTP to
-  string contact_method = 2; // Contact method like phone number or email
+message Challenge {
+  string challenge_id = 1;
+  string user_id = 2;
+  string challenge = 3;
+  google.protobuf.Timestamp issued_at = 4;
+  google.protobuf.Timestamp expires_at = 5;
 }
 
-// The response message for sending an OTP
-message SendOtpResponse {
-  bool success = 1; // Indicates if OTP was sent successfully
-  OTP otp = 2; // The OTP message sent to the user
-}
-
-// The request message for verifying an OTP
-message VerifyOtpRequest {
-  string user_id = 1; // The ID of the user
-  string otp_token = 2; // The OTP token provided by the user
-  google.protobuf.Timestamp received_at = 3; // Timestamp when OTP was received
-}
-
-// The response message for verifying an OTP
-message VerifyOtpResponse {
-  bool valid = 1; // Indicates if the OTP is valid
-  string message = 2; // Additional information (e.g., error messages)
-}
-
-// The request message for issuing a session token
-message IssueSessionTokenRequest {
-  string user_id = 1; // The ID of the user
-  string otp = 2; // The OTP used to verify the user
-}
-
-// The response message for issuing a session token
-message IssueSessionTokenResponse {
-  Session session = 1; // The session token message for authenticated user
-  string message = 2; // Additional information (e.g., success or error messages)
-}
-
-// The request message for revoking a session token
-message RevokeSessionTokenRequest {
-  string session_token = 1; // The token to revoke
-}
-
-// The response message for revoking a session token
-message RevokeSessionTokenResponse {
-  bool success = 1; // Indicates if the token was revoked successfully
-  string message = 2; // Additional information (e.g., success or error messages)
-}
-
-// The request message for verifying a signed challenge
 message VerifyChallengeRequest {
-  string user_id = 1; // The ID of the user
-  Challenge signed_challenge = 2; // The signed challenge from the user
+  string user_id = 1;
+  Challenge signed_challenge = 2;
 }
 
-// The response message for verifying a signed challenge
 message VerifyChallengeResponse {
-  bool valid = 1; // Indicates if the signed challenge is valid
-  string message = 2; // Additional information (e.g., error messages)
+  bool valid = 1;
+  string message = 2;
+}
+
+message SendOtpRequest {
+  string user_id = 1;
+  string contact_method = 2;
+}
+
+message OTP {
+  string otp_token = 1;
+  google.protobuf.Timestamp issued_at = 2;
+  google.protobuf.Timestamp expires_at = 3;
+}
+
+message SendOtpResponse {
+  bool success = 1;
+  OTP otp = 2;
+}
+
+message VerifyOtpRequest {
+  string user_id = 1;
+  string otp_token = 2;
+  google.protobuf.Timestamp received_at = 3;
+}
+
+message VerifyOtpResponse {
+  bool valid = 1;
+  string message = 2;
+}
+
+message IssueSessionTokenRequest {
+  string user_id = 1;
+  string otp = 2;
+}
+
+message Session {
+  string session_token = 1;
+  google.protobuf.Timestamp issued_at = 2;
+  google.protobuf.Timestamp expires_at = 3;
+}
+
+message IssueSessionTokenResponse {
+  Session session = 1;
+  string message = 2;
+}
+
+message RevokeSessionTokenRequest {
+  string session_token = 1;
+}
+
+message RevokeSessionTokenResponse {
+  bool success = 1;
+  string message = 2;
 }

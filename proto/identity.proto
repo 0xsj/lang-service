@@ -6,63 +6,33 @@ option go_package = ".";
 
 import "google/protobuf/timestamp.proto";
 
-// The IdentityService definition for managing DID and challenges
+// Service for DID operations
 service IdentityService {
-  // Creates a new DID for a user
   rpc CreateDID(CreateDIDRequest) returns (CreateDIDResponse);
-
-  // Resolves a DID to get its document
   rpc ResolveDID(ResolveDIDRequest) returns (ResolveDIDResponse);
-
-  // Issues a cryptographic challenge to the user
-  rpc IssueChallenge(IssueChallengeRequest) returns (IssueChallengeResponse);
-
-  // Verifies a signed challenge from the user
-  rpc VerifySignedChallenge(VerifySignedChallengeRequest) returns (VerifySignedChallengeResponse);
 }
 
-// The request message for creating a DID
+message DID {
+  string did = 1; 
+  string method = 2;
+  string method_specific_id = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
 message CreateDIDRequest {
-  string user_id = 1; // The ID of the user
+  string user_id = 1;
 }
 
-// The response message for creating a DID
 message CreateDIDResponse {
-  string DID = 1; // The newly created DID
-  string message = 2; // Additional information (e.g., success or error messages)
+  DID did = 1;
+  string message = 2;
 }
 
-// The request message for resolving a DID
 message ResolveDIDRequest {
-  string DID = 1; // The DID to resolve
+  string did = 1;
 }
 
-// The response message for resolving a DID
 message ResolveDIDResponse {
-  string DID_document = 1; // The DID document
-  string message = 2; // Additional information (e.g., success or error messages)
-}
-
-// The request message for issuing a challenge
-message IssueChallengeRequest {
-  string user_id = 1; // The ID of the user
-}
-
-// The response message for issuing a challenge
-message IssueChallengeResponse {
-  string challenge = 1; // The cryptographic challenge (nonce)
-  google.protobuf.Timestamp issued_at = 2; // Timestamp when the challenge was issued
-  string message = 3; // Additional information (e.g., success or error messages)
-}
-
-// The request message for verifying a signed challenge
-message VerifySignedChallengeRequest {
-  string user_id = 1; // The ID of the user
-  string signed_challenge = 2; // The signed challenge from the user
-}
-
-// The response message for verifying a signed challenge
-message VerifySignedChallengeResponse {
-  bool valid = 1; // Indicates if the signed challenge is valid
-  string message = 2; // Additional information (e.g., success or error messages)
+  string did_document = 1;
+  string message = 2;
 }
