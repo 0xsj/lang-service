@@ -1,31 +1,52 @@
 syntax = "proto3";
 
 package proto;
-option go_package = '.';
 
-import "google/protobuf/timestamp.proto";
-
-message User {
-    string user_id = 1;         
-    string email = 2;         
-    string name = 3;            
-    string profile_url = 4;     
-    google.protobuf.Timestamp created_at = 5; 
-    google.protobuf.Timestamp updated_at = 6;
-    string did = 7;
-}
-
-message UserRequest {
-    string user_id = 1;          
-}
-
-message UserResponse {
-    User user = 1;            
-}
+option go_package = ".";
 
 service UserService {
-    rpc GetUser(UserRequest) returns (UserResponse); 
-    rpc CreateUser(User) returns (UserResponse);     
-    rpc UpdateUser(User) returns (UserResponse);     
-    rpc DeleteUser(UserRequest) returns (UserResponse); 
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+
+  // Retrieves a user profile
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+}
+
+// The request message for creating a user
+message CreateUserRequest {
+  string user_id = 1; // Unique identifier for the user
+  string email = 2; // User's email address
+  string phone_number = 3; // User's phone number (optional)
+}
+
+// The response message for creating a user
+message CreateUserResponse {
+  string user_id = 1; // Unique identifier for the newly created user
+  string message = 2; // Additional information (e.g., success or error messages)
+}
+
+// The request message for updating a user
+message UpdateUserRequest {
+  string user_id = 1; // Unique identifier for the user
+  string email = 2; // Updated email address (optional)
+  string phone_number = 3; // Updated phone number (optional)
+}
+
+// The response message for updating a user
+message UpdateUserResponse {
+  bool success = 1; // Indicates if the update was successful
+  string message = 2; // Additional information (e.g., success or error messages)
+}
+
+// The request message for retrieving a user
+message GetUserRequest {
+  string user_id = 1; // Unique identifier for the user
+}
+
+// The response message for retrieving a user
+message GetUserResponse {
+  string user_id = 1; // Unique identifier for the user
+  string email = 2; // User's email address
+  string phone_number = 3; // User's phone number (optional)
 }

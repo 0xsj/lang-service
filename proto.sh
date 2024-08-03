@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Define arrays for Go services and the gateway
-goServices=("auth")
-gateway=("auth" "user" "notification" "identity")
+goServices=("auth" "identity")
+gateway=("auth" "user" "account" "identity")
 
 # Cleanup function to remove old proto files and create a new directory
 cleanup() {
