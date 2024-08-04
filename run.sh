@@ -1,13 +1,15 @@
 #!/bin/sh
 
-directories=("auth" "conduit")
+base_path="apps"  # Base path for service directories
+directories=("auth" "conduit" "identity" "account")
 pids=()  
 
 for dir in "${directories[@]}"; do
-    echo "Initializing services in $dir"
+    service_path="$base_path/$dir"
+    echo "Initializing services in $service_path"
     (
-        cd "$dir" || { echo "Directory $dir not found"; exit 1; }
-        go run src/main.go || { echo "Failed to run server in $dir"; exit 1; }
+        cd "$service_path" || { echo "Directory $service_path not found"; exit 1; }
+        go run src/main.go || { echo "Failed to run server in $service_path"; exit 1; }
     ) &
     pids+=($!)  
 done
