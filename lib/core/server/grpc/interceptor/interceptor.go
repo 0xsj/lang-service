@@ -1,4 +1,0 @@
-package interceptor
-
-
-func New(){}

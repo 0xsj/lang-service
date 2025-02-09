@@ -1,7 +1,3 @@
-# kakao
-
-- grpc, go, prometheus
-
-# summary
-
--
+# lang-service
+- translations
+- transcriptions
