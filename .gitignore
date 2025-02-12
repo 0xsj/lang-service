@@ -1,0 +1,32 @@
+# General OS files
+.DS_Store
+Thumbs.db
+
+# Virtual Environment (Python)
+venv/
+
+# Python Bytecode and Caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# Logs and Temporary Files
+*.log
+logs/
+*.pid
+*.swp
+*.swo
+*.bak
+*.tmp
+*.out
+nohup.out
+
+# Dependency Management
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Terraform (Infrastructure)
+infra/terraform/.terraform/
+infra/terrafo
