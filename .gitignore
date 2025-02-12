@@ -30,3 +30,6 @@ pip-delete-this-directory.txt
 # Terraform (Infrastructure)
 infra/terraform/.terraform/
 infra/terrafo
+
+
+git check-ignore -v venv/ .env terraform.tfstate
